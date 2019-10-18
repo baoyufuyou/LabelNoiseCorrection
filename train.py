@@ -151,14 +151,17 @@ def main():
             alpha = args.alpha
             if epoch < bootstrap_ep_mixup:
                 print('\t##### Doing NORMAL mixup for {0} epochs #####'.format(bootstrap_ep_mixup - 1))
+                ## train_mixUp 训练
                 loss_per_epoch, acc_train_per_epoch_i = train_mixUp(args, model, device, train_loader, optimizer, epoch, 32)
 
             else:
                 if args.BootBeta == "Hard":
+                    ## train_mixUp_HardBootBeta 训练
                     print("\t##### Doing HARD BETA bootstrapping and NORMAL mixup from the epoch {0} #####".format(bootstrap_ep_mixup))
                     loss_per_epoch, acc_train_per_epoch_i = train_mixUp_HardBootBeta(args, model, device, train_loader, optimizer, epoch,\
                                                                                     alpha, bmm_model, bmm_model_maxLoss, bmm_model_minLoss, args.reg_term, num_classes)
                 elif args.BootBeta == "Soft":
+                    ## train_mixUp_SoftBootBeta 训练
                     print("\t##### Doing SOFT BETA bootstrapping and NORMAL mixup from the epoch {0} #####".format(bootstrap_ep_mixup))
                     loss_per_epoch, acc_train_per_epoch_i = train_mixUp_SoftBootBeta(args, model, device, train_loader, optimizer, epoch, \
                                                                                     alpha, bmm_model, bmm_model_maxLoss, bmm_model_minLoss, args.reg_term, num_classes)
@@ -180,6 +183,7 @@ def main():
                                                                                                                 epoch, bmm_model, bmm_model_maxLoss, bmm_model_minLoss, \
                                                                                                                 countTemp, k, temp_length, args.reg_term, num_classes)
         ### Training tracking loss
+        ## 损失函数！！
         epoch_losses_train, epoch_probs_train, argmaxXentropy_train, bmm_model, bmm_model_maxLoss, bmm_model_minLoss = \
             track_training_loss(args, model, device, train_loader_track, epoch, bmm_model, bmm_model_maxLoss, bmm_model_minLoss)
 
